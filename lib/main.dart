@@ -12,10 +12,10 @@ void main() {
   );
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -74,81 +74,83 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-            Text(
-              "MARKETINYOU",
-              style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.12,
-                color: const Color(0xFFB22B15),
-                fontFamily: "Black Han Sans",
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-            TextField(
-              controller: _idController,
-              decoration: InputDecoration(
-                fillColor: Colors.grey[200],
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
-                ),
-                hintText: '아이디',
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                fillColor: Colors.grey[200],
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
-                ),
-                hintText: '비밀번호',
-              ),
-            ),
-            if (_errorMessage.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  _errorMessage,
-                  style: TextStyle(color: Colors.red),
-                ),
-              ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-            InkWell(
-              borderRadius: BorderRadius.circular(30),
-              onTap: _validateAndLogin,
-              child: Container(
-                width: 400,
-                height: 50,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: screenHeight * 0.2),
+              Text(
+                "MARKETINYOU",
+                style: TextStyle(
+                  fontSize: screenWidth * 0.12,
                   color: const Color(0xFFB22B15),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: const Text(
-                  "로그인",
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+                  fontFamily: "Black Han Sans",
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: screenHeight * 0.05),
+              _buildTextField(_idController, '아이디'),
+              SizedBox(height: screenHeight * 0.03),
+              _buildTextField(_passwordController, '비밀번호', obscureText: true),
+              if (_errorMessage.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    _errorMessage,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+              SizedBox(height: screenHeight * 0.03),
+              _buildLoginButton(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String hintText, {bool obscureText = false}) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        fillColor: Colors.grey[200],
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
+        ),
+        hintText: hintText,
+      ),
+    );
+  }
+
+  Widget _buildLoginButton() {
+    return InkWell(
+      borderRadius: BorderRadius.circular(30),
+      onTap: _validateAndLogin,
+      child: Container(
+        width: 400,
+        height: 50,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: const Color(0xFFB22B15),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: const Text(
+          "로그인",
+          style: TextStyle(color: Colors.white, fontSize: 25),
         ),
       ),
     );
   }
 }
-
 
 class Common_page extends StatelessWidget{
   @override
